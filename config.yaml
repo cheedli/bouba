@@ -1,0 +1,24 @@
+# Configuration file for Legal Chatbot with Milvus, Chainlit, and vLLM
+
+# Data Sources
+data_file: "data.txt"
+collection_name: "legal_documents"
+
+# Vector Database
+milvus_host: "localhost"
+milvus_port: "19530"
+
+# Embedding Model
+embedding_model: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+vector_dim: 384
+embedding_batch_size: 8
+
+# LLM Configuration
+vllm_model: "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+temperature: 0.1  # Low temperature for legal precision
+
+# Search Configuration
+search_top_k: 5
+semantic_search_weight: 0.5
+lexical_search_weight: 0.5
+legal_terms_bonus_weight: 0.2
