@@ -4459,3 +4459,433 @@ FileNotFoundError: Data file data.txt not found.
 2025-05-08 21:04:04,840 - INFO - Processing batch 48/183: chunks 376 to 383
 2025-05-08 21:04:04,843 - INFO - Use pytorch device_name: cpu
 2025-05-08 21:04:04,843 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:09,428 - INFO - Processing batch 49/183: chunks 384 to 391
+2025-05-08 21:04:09,431 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:09,431 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:12,340 - INFO - Processing batch 50/183: chunks 392 to 399
+2025-05-08 21:04:12,343 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:12,343 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:15,644 - INFO - Processing batch 51/183: chunks 400 to 407
+2025-05-08 21:04:15,651 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:15,651 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:19,419 - INFO - Processing batch 52/183: chunks 408 to 415
+2025-05-08 21:04:19,424 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:19,424 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:22,753 - INFO - Processing batch 53/183: chunks 416 to 423
+2025-05-08 21:04:22,761 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:22,762 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:26,633 - INFO - Processing batch 54/183: chunks 424 to 431
+2025-05-08 21:04:26,640 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:26,640 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:31,065 - INFO - Processing batch 55/183: chunks 432 to 439
+2025-05-08 21:04:31,069 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:31,069 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:34,329 - INFO - Processing batch 56/183: chunks 440 to 447
+2025-05-08 21:04:34,332 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:34,332 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:37,161 - INFO - Processing batch 57/183: chunks 448 to 455
+2025-05-08 21:04:37,163 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:37,163 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:40,236 - INFO - Processing batch 58/183: chunks 456 to 463
+2025-05-08 21:04:40,239 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:40,239 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:43,139 - INFO - Processing batch 59/183: chunks 464 to 471
+2025-05-08 21:04:43,142 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:43,142 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:46,177 - INFO - Processing batch 60/183: chunks 472 to 479
+2025-05-08 21:04:46,179 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:46,179 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:49,367 - INFO - Processing batch 61/183: chunks 480 to 487
+2025-05-08 21:04:49,370 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:49,371 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:52,266 - INFO - Processing batch 62/183: chunks 488 to 495
+2025-05-08 21:04:52,269 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:52,269 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:55,340 - INFO - Processing batch 63/183: chunks 496 to 503
+2025-05-08 21:04:55,344 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:55,344 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:04:58,693 - INFO - Processing batch 64/183: chunks 504 to 511
+2025-05-08 21:04:58,696 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:04:58,697 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:02,487 - INFO - Processing batch 65/183: chunks 512 to 519
+2025-05-08 21:05:02,491 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:02,491 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:06,768 - INFO - Processing batch 66/183: chunks 520 to 527
+2025-05-08 21:05:06,774 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:06,774 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:10,820 - INFO - Processing batch 67/183: chunks 528 to 535
+2025-05-08 21:05:10,825 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:10,825 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:15,214 - INFO - Processing batch 68/183: chunks 536 to 543
+2025-05-08 21:05:15,220 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:15,220 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:18,905 - INFO - Processing batch 69/183: chunks 544 to 551
+2025-05-08 21:05:18,910 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:18,910 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:23,192 - INFO - Processing batch 70/183: chunks 552 to 559
+2025-05-08 21:05:23,197 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:23,197 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:26,125 - INFO - Processing batch 71/183: chunks 560 to 567
+2025-05-08 21:05:26,127 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:26,127 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:29,175 - INFO - Processing batch 72/183: chunks 568 to 575
+2025-05-08 21:05:29,177 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:29,177 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:31,895 - INFO - Processing batch 73/183: chunks 576 to 583
+2025-05-08 21:05:31,898 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:31,898 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:34,819 - INFO - Processing batch 74/183: chunks 584 to 591
+2025-05-08 21:05:34,822 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:34,822 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:37,951 - INFO - Processing batch 75/183: chunks 592 to 599
+2025-05-08 21:05:37,954 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:37,954 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:41,155 - INFO - Processing batch 76/183: chunks 600 to 607
+2025-05-08 21:05:41,158 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:41,159 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:44,176 - INFO - Processing batch 77/183: chunks 608 to 615
+2025-05-08 21:05:44,180 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:44,180 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:47,533 - INFO - Processing batch 78/183: chunks 616 to 623
+2025-05-08 21:05:47,537 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:47,537 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:51,391 - INFO - Processing batch 79/183: chunks 624 to 631
+2025-05-08 21:05:51,395 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:51,395 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:55,424 - INFO - Processing batch 80/183: chunks 632 to 639
+2025-05-08 21:05:55,429 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:55,429 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:05:59,621 - INFO - Processing batch 81/183: chunks 640 to 647
+2025-05-08 21:05:59,626 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:05:59,626 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:03,699 - INFO - Processing batch 82/183: chunks 648 to 655
+2025-05-08 21:06:03,703 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:03,704 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:07,900 - INFO - Processing batch 83/183: chunks 656 to 663
+2025-05-08 21:06:07,904 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:07,904 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:11,996 - INFO - Processing batch 84/183: chunks 664 to 671
+2025-05-08 21:06:12,000 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:12,000 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:15,286 - INFO - Processing batch 85/183: chunks 672 to 679
+2025-05-08 21:06:15,289 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:15,289 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:18,357 - INFO - Processing batch 86/183: chunks 680 to 687
+2025-05-08 21:06:18,359 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:18,359 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:21,612 - INFO - Processing batch 87/183: chunks 688 to 695
+2025-05-08 21:06:21,614 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:21,615 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:25,606 - INFO - Processing batch 88/183: chunks 696 to 703
+2025-05-08 21:06:25,611 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:25,611 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:30,414 - INFO - Processing batch 89/183: chunks 704 to 711
+2025-05-08 21:06:30,417 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:30,418 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:34,523 - INFO - Processing batch 90/183: chunks 712 to 719
+2025-05-08 21:06:34,527 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:34,527 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:38,286 - INFO - Processing batch 91/183: chunks 720 to 727
+2025-05-08 21:06:38,290 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:38,291 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:41,994 - INFO - Processing batch 92/183: chunks 728 to 735
+2025-05-08 21:06:41,998 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:41,998 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:45,673 - INFO - Processing batch 93/183: chunks 736 to 743
+2025-05-08 21:06:45,678 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:45,679 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:49,808 - INFO - Processing batch 94/183: chunks 744 to 751
+2025-05-08 21:06:49,814 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:49,814 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:53,563 - INFO - Processing batch 95/183: chunks 752 to 759
+2025-05-08 21:06:53,566 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:53,566 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:06:57,527 - INFO - Processing batch 96/183: chunks 760 to 767
+2025-05-08 21:06:57,530 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:06:57,530 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:01,413 - INFO - Processing batch 97/183: chunks 768 to 775
+2025-05-08 21:07:01,416 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:01,416 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:05,332 - INFO - Processing batch 98/183: chunks 776 to 783
+2025-05-08 21:07:05,335 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:05,335 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:09,381 - INFO - Processing batch 99/183: chunks 784 to 791
+2025-05-08 21:07:09,385 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:09,385 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:13,675 - INFO - Processing batch 100/183: chunks 792 to 799
+2025-05-08 21:07:13,682 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:13,683 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:17,800 - INFO - Processing batch 101/183: chunks 800 to 807
+2025-05-08 21:07:17,807 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:17,807 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:21,428 - INFO - Processing batch 102/183: chunks 808 to 815
+2025-05-08 21:07:21,432 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:21,432 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:25,011 - INFO - Processing batch 103/183: chunks 816 to 823
+2025-05-08 21:07:25,017 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:25,017 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:28,991 - INFO - Processing batch 104/183: chunks 824 to 831
+2025-05-08 21:07:28,997 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:28,997 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:33,066 - INFO - Processing batch 105/183: chunks 832 to 839
+2025-05-08 21:07:33,069 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:33,069 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:36,828 - INFO - Processing batch 106/183: chunks 840 to 847
+2025-05-08 21:07:36,832 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:36,832 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:40,936 - INFO - Processing batch 107/183: chunks 848 to 855
+2025-05-08 21:07:40,940 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:40,940 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:45,128 - INFO - Processing batch 108/183: chunks 856 to 863
+2025-05-08 21:07:45,131 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:45,131 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:49,018 - INFO - Processing batch 109/183: chunks 864 to 871
+2025-05-08 21:07:49,025 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:49,025 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:52,735 - INFO - Processing batch 110/183: chunks 872 to 879
+2025-05-08 21:07:52,738 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:52,738 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:07:56,663 - INFO - Processing batch 111/183: chunks 880 to 887
+2025-05-08 21:07:56,670 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:07:56,671 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:00,801 - INFO - Processing batch 112/183: chunks 888 to 895
+2025-05-08 21:08:00,805 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:00,805 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:04,584 - INFO - Processing batch 113/183: chunks 896 to 903
+2025-05-08 21:08:04,588 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:04,588 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:08,379 - INFO - Processing batch 114/183: chunks 904 to 911
+2025-05-08 21:08:08,382 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:08,382 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:12,258 - INFO - Processing batch 115/183: chunks 912 to 919
+2025-05-08 21:08:12,261 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:12,262 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:16,271 - INFO - Processing batch 116/183: chunks 920 to 927
+2025-05-08 21:08:16,276 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:16,276 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:20,609 - INFO - Processing batch 117/183: chunks 928 to 935
+2025-05-08 21:08:20,614 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:20,615 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:24,748 - INFO - Processing batch 118/183: chunks 936 to 943
+2025-05-08 21:08:24,752 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:24,752 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:28,866 - INFO - Processing batch 119/183: chunks 944 to 951
+2025-05-08 21:08:28,870 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:28,870 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:32,999 - INFO - Processing batch 120/183: chunks 952 to 959
+2025-05-08 21:08:33,003 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:33,003 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:37,204 - INFO - Processing batch 121/183: chunks 960 to 967
+2025-05-08 21:08:37,208 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:37,208 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:41,409 - INFO - Processing batch 122/183: chunks 968 to 975
+2025-05-08 21:08:41,415 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:41,416 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:45,657 - INFO - Processing batch 123/183: chunks 976 to 983
+2025-05-08 21:08:45,661 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:45,661 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:49,571 - INFO - Processing batch 124/183: chunks 984 to 991
+2025-05-08 21:08:49,574 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:49,574 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:53,491 - INFO - Processing batch 125/183: chunks 992 to 999
+2025-05-08 21:08:53,494 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:53,495 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:08:57,833 - INFO - Processing batch 126/183: chunks 1000 to 1007
+2025-05-08 21:08:57,836 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:08:57,836 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:01,823 - INFO - Processing batch 127/183: chunks 1008 to 1015
+2025-05-08 21:09:01,827 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:01,827 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:05,415 - INFO - Processing batch 128/183: chunks 1016 to 1023
+2025-05-08 21:09:05,418 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:05,418 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:09,161 - INFO - Processing batch 129/183: chunks 1024 to 1031
+2025-05-08 21:09:09,164 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:09,164 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:13,210 - INFO - Processing batch 130/183: chunks 1032 to 1039
+2025-05-08 21:09:13,215 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:13,215 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:17,106 - INFO - Processing batch 131/183: chunks 1040 to 1047
+2025-05-08 21:09:17,109 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:17,109 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:20,785 - INFO - Processing batch 132/183: chunks 1048 to 1055
+2025-05-08 21:09:20,788 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:20,788 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:24,729 - INFO - Processing batch 133/183: chunks 1056 to 1063
+2025-05-08 21:09:24,733 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:24,734 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:28,848 - INFO - Processing batch 134/183: chunks 1064 to 1071
+2025-05-08 21:09:28,854 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:28,854 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:32,610 - INFO - Processing batch 135/183: chunks 1072 to 1079
+2025-05-08 21:09:32,616 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:32,616 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:36,465 - INFO - Processing batch 136/183: chunks 1080 to 1087
+2025-05-08 21:09:36,468 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:36,469 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:40,617 - INFO - Processing batch 137/183: chunks 1088 to 1095
+2025-05-08 21:09:40,625 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:40,625 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:44,572 - INFO - Processing batch 138/183: chunks 1096 to 1103
+2025-05-08 21:09:44,577 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:44,577 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:48,244 - INFO - Processing batch 139/183: chunks 1104 to 1111
+2025-05-08 21:09:48,247 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:48,248 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:51,682 - INFO - Processing batch 140/183: chunks 1112 to 1119
+2025-05-08 21:09:51,686 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:51,686 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:55,451 - INFO - Processing batch 141/183: chunks 1120 to 1127
+2025-05-08 21:09:55,455 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:55,455 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:09:59,161 - INFO - Processing batch 142/183: chunks 1128 to 1135
+2025-05-08 21:09:59,164 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:09:59,165 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:03,182 - INFO - Processing batch 143/183: chunks 1136 to 1143
+2025-05-08 21:10:03,185 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:03,185 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:06,904 - INFO - Processing batch 144/183: chunks 1144 to 1151
+2025-05-08 21:10:06,907 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:06,907 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:10,689 - INFO - Processing batch 145/183: chunks 1152 to 1159
+2025-05-08 21:10:10,692 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:10,692 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:14,663 - INFO - Processing batch 146/183: chunks 1160 to 1167
+2025-05-08 21:10:14,667 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:14,667 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:20,142 - INFO - Processing batch 147/183: chunks 1168 to 1175
+2025-05-08 21:10:20,145 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:20,145 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:24,901 - INFO - Processing batch 148/183: chunks 1176 to 1183
+2025-05-08 21:10:24,904 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:24,904 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:28,680 - INFO - Processing batch 149/183: chunks 1184 to 1191
+2025-05-08 21:10:28,684 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:28,684 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:32,509 - INFO - Processing batch 150/183: chunks 1192 to 1199
+2025-05-08 21:10:32,512 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:32,512 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:36,266 - INFO - Processing batch 151/183: chunks 1200 to 1207
+2025-05-08 21:10:36,269 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:36,269 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:40,076 - INFO - Processing batch 152/183: chunks 1208 to 1215
+2025-05-08 21:10:40,080 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:40,080 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:43,617 - INFO - Processing batch 153/183: chunks 1216 to 1223
+2025-05-08 21:10:43,621 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:43,621 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:48,311 - INFO - Processing batch 154/183: chunks 1224 to 1231
+2025-05-08 21:10:48,315 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:48,315 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:52,082 - INFO - Processing batch 155/183: chunks 1232 to 1239
+2025-05-08 21:10:52,085 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:52,085 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:10:56,009 - INFO - Processing batch 156/183: chunks 1240 to 1247
+2025-05-08 21:10:56,013 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:10:56,013 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:00,109 - INFO - Processing batch 157/183: chunks 1248 to 1255
+2025-05-08 21:11:00,112 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:00,112 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:04,032 - INFO - Processing batch 158/183: chunks 1256 to 1263
+2025-05-08 21:11:04,036 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:04,036 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:08,305 - INFO - Processing batch 159/183: chunks 1264 to 1271
+2025-05-08 21:11:08,308 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:08,309 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:12,246 - INFO - Processing batch 160/183: chunks 1272 to 1279
+2025-05-08 21:11:12,250 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:12,250 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:16,216 - INFO - Processing batch 161/183: chunks 1280 to 1287
+2025-05-08 21:11:16,220 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:16,220 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:20,123 - INFO - Processing batch 162/183: chunks 1288 to 1295
+2025-05-08 21:11:20,126 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:20,126 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:23,944 - INFO - Processing batch 163/183: chunks 1296 to 1303
+2025-05-08 21:11:23,951 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:23,951 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:27,678 - INFO - Processing batch 164/183: chunks 1304 to 1311
+2025-05-08 21:11:27,682 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:27,682 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:31,611 - INFO - Processing batch 165/183: chunks 1312 to 1319
+2025-05-08 21:11:31,614 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:31,615 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:35,279 - INFO - Processing batch 166/183: chunks 1320 to 1327
+2025-05-08 21:11:35,283 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:35,283 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:39,264 - INFO - Processing batch 167/183: chunks 1328 to 1335
+2025-05-08 21:11:39,267 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:39,267 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:43,351 - INFO - Processing batch 168/183: chunks 1336 to 1343
+2025-05-08 21:11:43,355 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:43,355 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:47,192 - INFO - Processing batch 169/183: chunks 1344 to 1351
+2025-05-08 21:11:47,195 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:47,195 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:52,131 - INFO - Processing batch 170/183: chunks 1352 to 1359
+2025-05-08 21:11:52,134 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:52,134 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:11:56,558 - INFO - Processing batch 171/183: chunks 1360 to 1367
+2025-05-08 21:11:56,561 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:11:56,561 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:00,212 - INFO - Processing batch 172/183: chunks 1368 to 1375
+2025-05-08 21:12:00,216 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:00,216 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:05,011 - INFO - Processing batch 173/183: chunks 1376 to 1383
+2025-05-08 21:12:05,017 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:05,017 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:09,231 - INFO - Processing batch 174/183: chunks 1384 to 1391
+2025-05-08 21:12:09,235 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:09,235 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:12,932 - INFO - Processing batch 175/183: chunks 1392 to 1399
+2025-05-08 21:12:12,936 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:12,936 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:16,815 - INFO - Processing batch 176/183: chunks 1400 to 1407
+2025-05-08 21:12:16,817 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:16,817 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:20,714 - INFO - Processing batch 177/183: chunks 1408 to 1415
+2025-05-08 21:12:20,721 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:20,721 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:24,324 - INFO - Processing batch 178/183: chunks 1416 to 1423
+2025-05-08 21:12:24,327 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:24,327 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:28,546 - INFO - Processing batch 179/183: chunks 1424 to 1431
+2025-05-08 21:12:28,552 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:28,552 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:33,072 - INFO - Processing batch 180/183: chunks 1432 to 1439
+2025-05-08 21:12:33,076 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:33,076 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:36,545 - INFO - Processing batch 181/183: chunks 1440 to 1447
+2025-05-08 21:12:36,547 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:36,548 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:39,743 - INFO - Processing batch 182/183: chunks 1448 to 1455
+2025-05-08 21:12:39,746 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:39,746 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:42,529 - INFO - Processing batch 183/183: chunks 1456 to 1459
+2025-05-08 21:12:42,532 - INFO - Use pytorch device_name: cpu
+2025-05-08 21:12:42,532 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2025-05-08 21:12:45,538 - INFO - Saving indexes to disk...
+2025-05-08 21:12:45,637 - INFO - Successfully built and saved all indexes
+2025-05-08 21:12:45,637 - INFO - Initialization complete. General index has 1460 embeddings
+2025-05-08 21:12:45,637 - INFO - Loaded 6 code-specific vector stores: loi_defense_contre_pratiques_deloyales_importation, loi_relative_commerce_exterieur, loi_relative_Startups, loi_societes_commerce_international, loi_societes_ligne, texte_code_societes_commerciales
+2025-05-08 21:12:45,661 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.100.9:5000
+2025-05-08 21:12:45,662 - INFO - [33mPress CTRL+C to quit[0m
+2025-05-08 21:12:47,108 - INFO - 127.0.0.1 - - [08/May/2025 21:12:47] "GET / HTTP/1.1" 200 -
+2025-05-08 21:12:47,132 - INFO - 127.0.0.1 - - [08/May/2025 21:12:47] "GET /js/article_popup.js HTTP/1.1" 200 -
+2025-05-08 21:12:47,154 - INFO - 127.0.0.1 - - [08/May/2025 21:12:47] "GET /get_conversations HTTP/1.1" 200 -
+2025-05-08 21:12:47,231 - INFO - 127.0.0.1 - - [08/May/2025 21:12:47] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-05-08 21:12:59,312 - INFO - 127.0.0.1 - - [08/May/2025 21:12:59] "GET /get_conversation/50 HTTP/1.1" 200 -
+2025-05-08 21:13:08,929 - INFO - Sending request to Groq API: model=gemma2-9b-it, temperature=0.7, max_tokens=1000
+2025-05-08 21:13:09,302 - INFO - Token usage: prompt=54, completion=12, total=66
+2025-05-08 21:13:09,343 - INFO - Processing query: 'comment lancer une startup?' for conversation 51
+2025-05-08 21:13:09,349 - INFO - Query received: comment lancer une startup?
+2025-05-08 21:13:09,945 - INFO - Routing query to code: loi_relative_Startups (similarity: 0.5040)
+2025-05-08 21:13:10,016 - INFO - Sending request to Groq API with model: deepseek-r1-distill-llama-70b
+2025-05-08 21:13:10,016 - INFO - Sending request to Groq API: model=deepseek-r1-distill-llama-70b, temperature=0.1, max_tokens=2048
+2025-05-08 21:13:18,883 - INFO - Token usage: prompt=1775, completion=895, total=2670
+2025-05-08 21:13:27,254 - INFO - Agent workflow completed in 18.32s
+2025-05-08 21:13:27,326 - INFO - Request processed in 18.40s (thinking: 17.24s)
+2025-05-08 21:13:27,327 - INFO - 127.0.0.1 - - [08/May/2025 21:13:27] "POST /ask HTTP/1.1" 200 -
