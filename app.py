@@ -18,8 +18,6 @@ import yaml
 from transformers import MarianMTModel, MarianTokenizer
 from langchain.vectorstores import FAISS
 from typing import Dict, List, TypedDict, Optional
-
-# Add this class at the top of your file, after imports
 from langchain.embeddings.base import Embeddings
 
 class SentenceTransformerEmbeddings(Embeddings):
@@ -63,14 +61,10 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+code_bm25_indexes = {} 
+
 # Load configuration
-CONFIG_FILE = "config.yaml"
 DEFAULT_CONFIG = {
-    "data_file": "data.txt",
-    "index_file": "faiss_index",
-    "embeddings_file": "embeddings.npy",
-    "mappings_file": "doc_mappings.json",
-    "bm25_corpus_file": "bm25_corpus.json",
     "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "vector_dim": 384,
     "groq_api_key": "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",
@@ -84,21 +78,14 @@ DEFAULT_CONFIG = {
     "stores_directory": "stores"
 }
 
-if os.path.exists(CONFIG_FILE):
-    with open(CONFIG_FILE, "r") as f:
-        loaded_config = yaml.safe_load(f) or {}
-    config = DEFAULT_CONFIG.copy()
-    config.update(loaded_config)
-else:
-    config = DEFAULT_CONFIG
-    logging.warning(f"Config file {CONFIG_FILE} not found, using defaults.")
 
+config = DEFAULT_CONFIG
+    
 app = Flask(__name__, template_folder="templates", static_folder="static")
 CORS(app)
 
 embedding_model = SentenceTransformer(config["embedding_model"])
-index, embeddings, doc_mappings, bm25, legal_data = None, None, None, None, None
-
+legal_data = None
 model_name = "Helsinki-NLP/opus-mt-en-fr"
 tokenizer = MarianTokenizer.from_pretrained(model_name)
 model = MarianMTModel.from_pretrained(model_name)
@@ -137,6 +124,7 @@ def route_to_best_summary(query):
     similarity_score = similarities[best_code]
     logging.info(f"Routing query to code: {best_code} (similarity: {similarity_score:.4f})")
     return best_code, similarity_score
+
 def retrieve_from_code_store(code_name, query, k=5):
     """Retrieve documents from a specific code store."""
     if code_name in code_stores:
@@ -385,162 +373,8 @@ def groq_chat_completion(messages, model=None, temperature=0.7, max_tokens=1000)
     # If we got here, all retries failed
     raise ValueError("Failed to get response from Groq API after multiple attempts")
 
-def tokenize_text(text: str, lang: str = "fr") -> List[str]:
-    return re.findall(r'\w+', text.lower())
-
-def chunk_text(text, chunk_size=512, overlap=100):
-    """Chunk text into smaller pieces with overlap for more precise indexing."""
-    chunks = []
-    start = 0
-    text_length = len(text)
-    
-    while start < text_length:
-        end = min(start + chunk_size, text_length)
-        
-        # Avoid cutting words in the middle
-        if end < text_length:
-            # Look for a good breaking point (space, period, etc.)
-            breaking_chars = [' ', '.', '!', '?', ';', ':', '\n', '\t']
-            for char in breaking_chars:
-                pos = text.rfind(char, start, end)
-                if pos != -1:
-                    end = pos + 1  # Include the breaking character
-                    break
-        
-        chunk = text[start:end].strip()
-        if chunk:  # Only add non-empty chunks
-            chunks.append(chunk)
-        
-        # Move start position for next chunk, with overlap
-        start = end - overlap if end < text_length else text_length
-    
-    return chunks
-
-def extract_article_info(text):
-    """Extract article number and other metadata from legal text."""
-    article_match = re.search(r'Article\s+(\d+[a-zA-Z]*(?:-\d+)?)', text)
-    article_num = article_match.group(1) if article_match else "Unknown"
-    
-    # Try to extract a title if there is one (often follows the article number)
-    title_match = None
-    if article_match:
-        title_pattern = re.compile(r'Article\s+\d+[a-zA-Z]*(?:-\d+)?\s*[-–:.]?\s*(.+?)(?:\n|\.|$)', re.DOTALL)
-        title_match = title_pattern.search(text)
-    
-    title = title_match.group(1).strip() if title_match else ""
-    
-    # Look for dates in the text
-    date_patterns = [
-        r'\b(\d{1,2})[\/\.-](\d{1,2})[\/\.-](\d{2,4})\b',  # DD/MM/YYYY, DD-MM-YYYY, DD.MM.YYYY
-        r'\b(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})\b',    # YYYY/MM/DD, YYYY-MM-DD, YYYY.MM.DD
-        r'\b(\d{1,2})\s+([a-zéû]+)\s+(\d{4})\b'            # DD Month YYYY
-    ]
-    
-    date_str = "Unknown"
-    for pattern in date_patterns:
-        date_match = re.search(pattern, text)
-        if date_match:
-            date_str = date_match.group(0)
-            break
-    
-    return {
-        "article_number": article_num,
-        "title": title,
-        "date": date_str
-    }
-
-def parse_legal_data(file_path: str) -> List[Dict]:
-    """Parse legal data from text file with articles separated by \n\n with enhanced metadata extraction."""
-    with open(file_path, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Split by double newlines to get chunks
-    chunks = content.split("\n\n")
-    legal_data = []
-    
-    for i, chunk in enumerate(chunks):
-        if not chunk.strip():
-            continue
-        
-        # Clean and normalize the chunk
-        chunk = chunk.strip()
-        
-        # Extract article name and content
-        lines = chunk.split('\n')
-        article_match = re.match(r'(Article\s+\w+)', lines[0]) if lines else None
-        
-        if article_match:
-            article_name = article_match.group(1)
-            article_content = '\n'.join(lines[1:]) if len(lines) > 1 else ""
-            
-            # If article content is empty but there's only one line, use that as content
-            if not article_content and len(lines) == 1:
-                article_content = lines[0].replace(article_name, "").strip()
-                if not article_content:
-                    article_content = lines[0]
-        else:
-            article_name = f"Section {i+1}"
-            article_content = chunk
-        
-        # Extract additional metadata
-        metadata = extract_article_info(chunk)
-        
-        # Determine the language
-        try:
-            lang = detect(chunk)
-        except:
-            lang = "fr"  # Default to French if detection fails
-        
-        # Create the entry
-        chunk_id = f"chunk_{i}"
-        legal_data.append({
-            "chunk_id": chunk_id,
-            "article": article_name,
-            "article_number": metadata["article_number"],
-            "title": metadata["title"],
-            "text": chunk.strip(),
-            "content": article_content.strip(),
-            "metadata": {
-                "language": lang,
-                "update_date": metadata["date"]
-            }
-        })
-        
-        # For long chunks, create additional sub-chunks for better search precision
-        if len(chunk) > 1000:  # Only sub-chunk if the article is long
-            sub_chunks = chunk_text(chunk, chunk_size=500, overlap=100)
-            if len(sub_chunks) > 1:  # Only proceed if we actually have multiple sub-chunks
-                for j, sub_chunk in enumerate(sub_chunks):
-                    if j > 0:  # Skip the first one since we already added the full chunk
-                        sub_chunk_id = f"{chunk_id}_sub_{j}"
-                        legal_data.append({
-                            "chunk_id": sub_chunk_id,
-                            "article": f"{article_name} (Part {j+1})",
-                            "article_number": metadata["article_number"],
-                            "title": metadata["title"],
-                            "text": sub_chunk.strip(),
-                            "content": sub_chunk.strip(),
-                            "parent_chunk": chunk_id,
-                            "is_sub_chunk": True,
-                            "metadata": {
-                                "language": lang,
-                                "update_date": metadata["date"]
-                            }
-                        })
-    
-    return legal_data
-
-def needs_rebuild(data_file: str, *dependent_files: str) -> bool:
-    if not os.path.exists(data_file):
-        raise FileNotFoundError(f"{data_file} not found.")
-    data_mtime = os.path.getmtime(data_file)
-    return any(
-        (not os.path.exists(dep_file)) or (os.path.getmtime(dep_file) < data_mtime)
-        for dep_file in dependent_files
-    )
-
 def build_code_stores():
-    """Build individual vector stores for each legal code."""
+    """Build individual vector stores and BM25 indexes for each legal code."""
     print("============================================")
     print("STARTING CODE STORE CREATION PROCESS")
     print("============================================")
@@ -548,53 +382,73 @@ def build_code_stores():
     # Ensure stores directory exists
     stores_dir = os.path.abspath(config.get("stores_directory", "stores"))
     if os.path.exists(stores_dir):
-        import shutil
-        shutil.rmtree(stores_dir)
-        print(f"Removed existing stores directory: {stores_dir}")
-    
-    os.makedirs(stores_dir, exist_ok=True)
-    print(f"Created stores directory: {stores_dir}")
+        # Only remove specific subdirectories, keeping build_metadata.json
+        for item in os.listdir(stores_dir):
+            item_path = os.path.join(stores_dir, item)
+            # Skip the metadata file when cleaning up
+            if item != "build_metadata.json" and os.path.exists(item_path):
+                if os.path.isdir(item_path):
+                    import shutil
+                    shutil.rmtree(item_path)
+                    print(f"Removed directory: {item_path}")
+                else:
+                    os.remove(item_path)
+                    print(f"Removed file: {item_path}")
+    else:
+        os.makedirs(stores_dir, exist_ok=True)
+        print(f"Created stores directory: {stores_dir}")
     
     # Create our custom embeddings wrapper
     embedding_wrapper = SentenceTransformerEmbeddings(config["embedding_model"])
     print(f"Created embeddings wrapper for model: {config['embedding_model']}")
-    
+   
+    # Directory for storing BM25 corpora
+    bm25_dir = os.path.join(stores_dir, "bm25")
+    os.makedirs(bm25_dir, exist_ok=True)
+    print(f"Created BM25 directory: {bm25_dir}")
+   
     # Directory containing source legal code files
     legal_codes_dir = os.path.abspath("legal_codes")
     if not os.path.exists(legal_codes_dir):
         print(f"ERROR: Legal codes directory not found: {legal_codes_dir}")
         return False
-    
+   
     # List all files in the directory
     code_files = os.listdir(legal_codes_dir)
     print(f"Found {len(code_files)} files in legal_codes directory")
-    
+   
     # Process each legal code
     successful_stores = 0
     for code_name in code_summaries.keys():
         code_file = os.path.join(legal_codes_dir, f"{code_name}.txt")
         print(f"Processing: {code_name}")
-        
+       
         if not os.path.exists(code_file):
             print(f"File not found: {code_file}")
             continue
-        
+       
         try:
             # Read the legal code file
             with open(code_file, "r", encoding="utf-8") as f:
                 content = f.read()
-            
+           
             # Create simple chunks - just use paragraphs
             paragraphs = [p for p in content.split('\n\n') if p.strip()]
             if not paragraphs:
                 paragraphs = [content]  # Use whole content if no paragraphs
-            
-            # Create documents
+           
+            # Create documents and prepare BM25 corpus
             from langchain.schema import Document
             documents = []
+            bm25_corpus = []
+           
             for i, para in enumerate(paragraphs):
+                # Clean the paragraph
+                para_text = para.strip()
+               
+                # Create document for FAISS
                 doc = Document(
-                    page_content=para.strip(),
+                    page_content=para_text,
                     metadata={
                         "article_id": f"para_{i+1}",
                         "article": f"Paragraph {i+1}",
@@ -604,48 +458,82 @@ def build_code_stores():
                     }
                 )
                 documents.append(doc)
-            
+               
+                # Create tokenized text for BM25
+                tokenized_text = tokenize_text(para_text, "fr")  # Assuming French for Tunisian laws
+                bm25_corpus.append(tokenized_text)
+           
             print(f"Created {len(documents)} documents for {code_name}")
-            
-            # Use the proper imports
+           
+            # Create BM25 index
+            bm25_index = BM25Okapi(bm25_corpus)
+           
+            # Save BM25 corpus and document mapping
+            bm25_data = {
+                "corpus": bm25_corpus,
+                "document_mapping": [
+                    {
+                        "chunk_id": doc.metadata["chunk_id"],
+                        "article": doc.metadata["article"],
+                        "article_id": doc.metadata["article_id"],
+                        "content": doc.page_content,
+                        "code_name": code_name
+                    }
+                    for doc in documents
+                ]
+            }
+           
+            bm25_file = os.path.join(bm25_dir, f"{code_name}_bm25.json")
+            with open(bm25_file, "w", encoding="utf-8") as f:
+                json.dump(bm25_data, f, ensure_ascii=False)
+           
+            # Create the FAISS vector store
             try:
                 from langchain_community.vectorstores import FAISS
                 print("Using langchain_community.vectorstores FAISS")
             except ImportError:
                 from langchain.vectorstores import FAISS
                 print("Using langchain.vectorstores FAISS")
-            
+           
             # Create the vector store using our wrapper
             store = FAISS.from_documents(documents, embedding_wrapper)
             print(f"Created FAISS index for {code_name}")
-            
-            # Save the store
+           
+            # Save the FAISS store
             store_path = os.path.join(stores_dir, code_name)
             store.save_local(store_path)
             print(f"Saved store to {store_path}")
-            
+           
             # Verify files were created
-            if os.path.exists(store_path):
-                files = os.listdir(store_path)
-                print(f"Store directory {store_path} contains: {files}")
-                if files:
-                    successful_stores += 1
-                    print(f"SUCCESS: Store created for {code_name}")
-                else:
-                    print(f"ERROR: Store directory is empty: {store_path}")
-            else:
+            success = True
+            if not os.path.exists(store_path):
                 print(f"ERROR: Store directory was not created: {store_path}")
-                
+                success = False
+            elif not os.listdir(store_path):
+                print(f"ERROR: Store directory is empty: {store_path}")
+                success = False
+               
+            if not os.path.exists(bm25_file):
+                print(f"ERROR: BM25 file was not created: {bm25_file}")
+                success = False
+               
+            if success:
+                successful_stores += 1
+                print(f"SUCCESS: Store and BM25 index created for {code_name}")
+               
         except Exception as e:
             import traceback
             print(f"ERROR processing {code_name}: {str(e)}")
             print(traceback.format_exc())
-    
+   
     # Final verification
     if os.path.exists(stores_dir):
         store_dirs = os.listdir(stores_dir)
         print(f"Stores directory contains: {store_dirs}")
         print(f"Successfully created {successful_stores} out of {len(code_summaries)} stores")
+    
+    # At the end of the function, add:
+    save_build_metadata()
     
     print("============================================")
     print("COMPLETED CODE STORE CREATION PROCESS")
@@ -654,24 +542,22 @@ def build_code_stores():
     return successful_stores > 0
 
 def initialize_data():
-    global index, embeddings, doc_mappings, bm25, legal_data, code_stores
+    global legal_data, code_stores, code_bm25_indexes
     try:
-        if not os.path.exists(config["data_file"]):
-            raise FileNotFoundError(f"Data file {config['data_file']} not found.")
-        
         # Create the embedding wrapper for LangChain compatibility
         embedding_wrapper = SentenceTransformerEmbeddings(config["embedding_model"])
         
-        # Initialize code_stores dictionary for routing
+        # Initialize dictionaries for routing
         code_stores = {}
+        code_bm25_indexes = {}
         stores_dir = config.get("stores_directory", "stores")
         
-        # First, build code-specific stores if they don't exist or are empty
+        # Check if stores directory exists and build if necessary
         if not os.path.exists(stores_dir) or not os.listdir(stores_dir):
             logging.info("Stores directory is empty or doesn't exist. Building code stores...")
             build_code_stores()
         
-        # Now load code-specific stores if they exist
+        # Load FAISS code-specific stores
         if os.path.exists(stores_dir):
             logging.info(f"Loading code-specific vector stores from {stores_dir}...")
             for code_name in code_summaries.keys():
@@ -689,121 +575,55 @@ def initialize_data():
                         # Load the store using our embedding wrapper
                         store = FAISS.load_local(store_path, embedding_wrapper, allow_dangerous_deserialization=True)
                         code_stores[code_name] = store
-                        logging.info(f"Loaded vector store for {code_name}")
+                        logging.info(f"Loaded FAISS store for {code_name}")
                     except Exception as e:
-                        logging.error(f"Error loading store for {code_name}: {e}")
+                        logging.error(f"Error loading FAISS store for {code_name}: {e}")
+                        import traceback
+                        logging.error(traceback.format_exc())
+                
+                # Load BM25 index
+                bm25_dir = os.path.join(stores_dir, "bm25")
+                bm25_file = os.path.join(bm25_dir, f"{code_name}_bm25.json")
+                if os.path.exists(bm25_file):
+                    try:
+                        with open(bm25_file, "r", encoding="utf-8") as f:
+                            bm25_data = json.load(f)
+                        
+                        bm25_corpus = bm25_data["corpus"]
+                        document_mapping = bm25_data["document_mapping"]
+                        
+                        # Create BM25 index
+                        bm25_index = BM25Okapi(bm25_corpus)
+                        
+                        # Store both the index and document mapping
+                        code_bm25_indexes[code_name] = {
+                            "index": bm25_index,
+                            "documents": document_mapping,
+                            "corpus": bm25_corpus
+                        }
+                        
+                        logging.info(f"Loaded BM25 index for {code_name}")
+                    except Exception as e:
+                        logging.error(f"Error loading BM25 index for {code_name}: {e}")
                         import traceback
                         logging.error(traceback.format_exc())
         else:
             logging.warning(f"Stores directory {stores_dir} not found. Code-specific routing will be disabled.")
-        
-        # Now continue with the regular index loading/building
-        if not needs_rebuild(
-            config["data_file"],
-            config["index_file"],
-            config["embeddings_file"],
-            config["mappings_file"],
-            config["bm25_corpus_file"]
-        ):
-            logging.info("Loading pre-built indexes...")
-            index = faiss.read_index(config["index_file"])
-            embeddings = np.load(config["embeddings_file"]).tolist()
-            with open(config["mappings_file"], "r", encoding="utf-8") as f:
-                doc_mappings = json.load(f)
-            with open(config["bm25_corpus_file"], "r", encoding="utf-8") as f:
-                bm25_corpus = json.load(f)
-            bm25 = BM25Okapi(bm25_corpus)
-            # Load legal data
-            legal_data = parse_legal_data(config["data_file"])
-            logging.info(f"Loaded {len(legal_data)} legal document chunks")
-        else:
-            logging.info("Rebuilding indexes due to updated data...")
-            legal_data = parse_legal_data(config["data_file"])
-            logging.info(f"Parsed {len(legal_data)} legal document chunks")
-            
-            # Initialize FAISS index - use cosine similarity for legal text (more suitable than L2)
-            vector_dim = config["vector_dim"]
-            index = faiss.IndexFlatIP(vector_dim)  # Inner product (cosine) instead of L2 distance
-            
-            doc_mappings = {}
-            embeddings = []
-            bm25_corpus = []
-            
-            # Process in batches to avoid memory issues with large datasets
-            batch_size = config.get("embedding_batch_size", 8)
-            total_chunks = len(legal_data)
-            
-            for i in range(0, total_chunks, batch_size):
-                batch_end = min(i + batch_size, total_chunks)
-                batch = legal_data[i:batch_end]
-                
-                logging.info(f"Processing batch {i//batch_size + 1}/{(total_chunks+batch_size-1)//batch_size}: chunks {i} to {batch_end-1}")
-                
-                # Prepare texts for batch encoding
-                texts = [entry["text"] for entry in batch]
-                
-                # Encode batch - use the raw SentenceTransformer model for this part
-                # since we're working directly with numpy arrays
-                raw_model = SentenceTransformer(config["embedding_model"])
-                batch_embeddings = raw_model.encode(texts, convert_to_numpy=True, show_progress_bar=False)
-                
-                # Normalize embeddings for cosine similarity
-                faiss.normalize_L2(batch_embeddings)
-                
-                # Process each entry in the batch
-                for j, entry in enumerate(batch):
-                    chunk_id = entry["chunk_id"]
-                    text = entry["text"]
-                    lang = entry["metadata"]["language"].lower()
-                    
-                    # Enhanced document details with more metadata
-                    doc_details = {
-                        "text": text,
-                        "article": entry["article"],
-                        "article_number": entry.get("article_number", "Unknown"),
-                        "title": entry.get("title", ""),
-                        "chunk_id": chunk_id,
-                        "content": entry.get("content", text),
-                        "update_date": entry["metadata"]["update_date"],
-                        "is_sub_chunk": entry.get("is_sub_chunk", False),
-                        "parent_chunk": entry.get("parent_chunk", None)
-                    }
-                    
-                    # Add embedding to list
-                    embeddings.append(batch_embeddings[j])
-                    
-                    # Store document mapping
-                    doc_mappings[chunk_id] = doc_details
-                    
-                    # Create tokenized text for BM25
-                    bm25_corpus.append(tokenize_text(text, lang))
-            
-            # Add all embeddings to the index
-            index.add(np.array(embeddings))
-            
-            # Save everything
-            logging.info("Saving indexes to disk...")
-            faiss.write_index(index, config["index_file"])
-            np.save(config["embeddings_file"], np.array(embeddings))
-            with open(config["mappings_file"], "w", encoding="utf-8") as f:
-                json.dump(doc_mappings, f, ensure_ascii=False)
-            with open(config["bm25_corpus_file"], "w", encoding="utf-8") as f:
-                json.dump(bm25_corpus, f, ensure_ascii=False)
-            
-            # Initialize BM25
-            bm25 = BM25Okapi(bm25_corpus)
-            
-            logging.info("Successfully built and saved all indexes")
             
         # Log summary information about loaded resources
-        logging.info(f"Initialization complete. General index has {len(embeddings) if embeddings else 0} embeddings")
-        logging.info(f"Loaded {len(code_stores)} code-specific vector stores: {', '.join(code_stores.keys()) or 'None'}")
+        logging.info(f"Initialization complete:")
+        logging.info(f"Loaded {len(code_stores)} FAISS stores: {', '.join(code_stores.keys()) or 'None'}")
+        logging.info(f"Loaded {len(code_bm25_indexes)} BM25 indexes: {', '.join(code_bm25_indexes.keys()) or 'None'}")
         
     except Exception as e:
         logging.error(f"Failed to initialize data: {e}")
         import traceback
         logging.error(traceback.format_exc())
         raise
+    
+def tokenize_text(text: str, lang: str = "fr") -> List[str]:
+    """Split text into tokens for BM25 indexing."""
+    return re.findall(r'\w+', text.lower())
 
 def detect_language(query: str) -> str:
     try:
@@ -929,43 +749,30 @@ def perform_search(state: ChatbotState) -> ChatbotState:
             "text": f"Routing to specific code: {best_code} (similarity: {similarity:.4f})"
         })
         
-        # Only use the specific code store
-        if best_code in code_stores:
-            store = code_stores[best_code]
+        # Check if we have both FAISS and BM25 indexes for this code
+        if best_code in code_stores and best_code in code_bm25_indexes:
+            # Use hybrid search
+            code_results = hybrid_search_code(
+                best_code, 
+                search_query, 
+                k=5, 
+                alpha=config.get("semantic_search_weight", 0.5)
+            )
             
-            try:
-                # Get relevant documents from the store
-                docs = store.similarity_search(search_query, k=5)
-                
-                # Process documents into search results
-                code_results = []
-                for i, doc in enumerate(docs):
-                    # Extract document metadata
-                    metadata = doc.metadata or {}
-                    confidence = 0.9 - (i * 0.1)  # Simple confidence score based on rank
-                    
-                    article_id = metadata.get("article_id", f"Unknown")
-                    
-                    result = {
-                        "article": metadata.get("article", f"Article {article_id}"),
-                        "article_number": article_id,
-                        "chunk_id": metadata.get("chunk_id", f"chunk_{i}"),
-                        "text": doc.page_content,
-                        "content": doc.page_content,
-                        "update_date": metadata.get("update_date", "Unknown"),
-                        "confidence": confidence,
-                        "code_name": best_code,
-                        "from_routing": True
-                    }
-                    code_results.append(result)
-                
+            if code_results:
                 # Create a detailed context with confidence scores and code summary
                 context_entries = []
                 for i, res in enumerate(code_results):
                     confidence = res["confidence"]
                     relevance_label = "High" if confidence > 0.85 else "Medium" if confidence > 0.65 else "Low"
+                    
+                    # Add semantic and BM25 scores for better understanding
+                    semantic_score = res.get("semantic_score", 0)
+                    bm25_score = res.get("bm25_score", 0)
+                    
                     context_entries.append(
-                        f"Document {i+1} [Relevance: {relevance_label}, Confidence: {confidence:.2%}, Code: {best_code}]\n"
+                        f"Document {i+1} [Relevance: {relevance_label}, Confidence: {confidence:.2%}, "
+                        f"Semantic: {semantic_score:.2f}, Lexical: {bm25_score:.2f}, Code: {best_code}]\n"
                         f"Article: {res['article']}\n"
                         f"Content: {res['content']}"
                     )
@@ -978,8 +785,8 @@ def perform_search(state: ChatbotState) -> ChatbotState:
                     context += code_context
                 
                 state["reasoning_steps"].append({
-                    "step": "code_search", 
-                    "text": f"Found {len(code_results)} relevant documents from {best_code}:\n\n{context}"
+                    "step": "hybrid_search", 
+                    "text": f"Found {len(code_results)} relevant documents using hybrid search from {best_code}:\n\n{context}"
                 })
                 
                 state["search_results"] = code_results
@@ -989,27 +796,117 @@ def perform_search(state: ChatbotState) -> ChatbotState:
                         "chunk_id": res["chunk_id"],
                         "text": res["text"],
                         "content": res["content"],
-                        "update_date": res["update_date"],
+                        "update_date": res.get("update_date", "Unknown"),
                         "confidence": res["confidence"],
                         "code_name": best_code,
-                        "highlight": True
+                        "highlight": True,
+                        "semantic_score": res.get("semantic_score", 0),
+                        "bm25_score": res.get("bm25_score", 0)
                     }
                     for res in code_results
                 ]
                 return state
-            except Exception as e:
-                logging.error(f"Error searching code store {best_code}: {e}")
+            else:
+                # Fallback to FAISS only if hybrid search failed
+                logging.info(f"Hybrid search returned no results, falling back to FAISS only for {best_code}")
+                store = code_stores[best_code]
+                
+                try:
+                    # Rest of your existing code for FAISS-only search
+                    docs = store.similarity_search(search_query, k=5)
+                    
+                    # Process documents into search results
+                    code_results = []
+                    # ... your existing code for processing FAISS results
+                except Exception as e:
+                    logging.error(f"Error in fallback search for code {best_code}: {e}")
+                    state["reasoning_steps"].append({
+                        "step": "fallback_search_error", 
+                        "text": f"Error in fallback search for code {best_code}: {str(e)}."
+                    })
+        else:
+            # Use FAISS only if BM25 index is not available
+            if best_code in code_stores:
+                store = code_stores[best_code]
+                
+                try:
+                    # Get relevant documents from the store
+                    docs = store.similarity_search(search_query, k=5)
+                
+                    # Process documents into search results
+                    code_results = []
+                    for i, doc in enumerate(docs):
+                        # Extract document metadata
+                        metadata = doc.metadata or {}
+                        confidence = 0.9 - (i * 0.1)  # Simple confidence score based on rank
+                    
+                        article_id = metadata.get("article_id", f"Unknown")
+                    
+                        result = {
+                            "article": metadata.get("article", f"Article {article_id}"),
+                            "article_number": article_id,
+                            "chunk_id": metadata.get("chunk_id", f"chunk_{i}"),
+                            "text": doc.page_content,
+                            "content": doc.page_content,
+                            "update_date": metadata.get("update_date", "Unknown"),
+                            "confidence": confidence,
+                            "code_name": best_code,
+                            "from_routing": True
+                        }
+                        code_results.append(result)
+                
+                    # Create a detailed context with confidence scores and code summary
+                    context_entries = []
+                    for i, res in enumerate(code_results):
+                        confidence = res["confidence"]
+                        relevance_label = "High" if confidence > 0.85 else "Medium" if confidence > 0.65 else "Low"
+                        context_entries.append(
+                            f"Document {i+1} [Relevance: {relevance_label}, Confidence: {confidence:.2%}, Code: {best_code}]\n"
+                            f"Article: {res['article']}\n"
+                            f"Content: {res['content']}"
+                        )
+                
+                    context = "\n\n".join(context_entries)
+                
+                    # Add code summary as additional context
+                    if best_code in code_summaries:
+                        code_context = f"\n\nCode Description: {code_summaries[best_code]}"
+                        context += code_context
+                
+                    state["reasoning_steps"].append({
+                        "step": "code_search",
+                        "text": f"Found {len(code_results)} relevant documents from {best_code}:\n\n{context}"
+                    })
+                
+                    state["search_results"] = code_results
+                    state["sources"] = [
+                        {
+                            "article": res["article"],
+                            "chunk_id": res["chunk_id"],
+                            "text": res["text"],
+                            "content": res["content"],
+                            "update_date": res["update_date"],
+                            "confidence": res["confidence"],
+                            "code_name": best_code,
+                            "highlight": True
+                        }
+                        for res in code_results
+                    ]
+                    return state
+
+                except Exception as e:
+                    logging.error(f"Error searching code store {best_code}: {e}")
+                    state["reasoning_steps"].append({
+                        "step": "code_search_error", 
+                        "text": f"Error searching in code {best_code}: {str(e)}."
+                    })
+            else:
                 state["reasoning_steps"].append({
                     "step": "code_search_error", 
-                    "text": f"Error searching in code {best_code}: {str(e)}."
+                    "text": f"Code store for {best_code} not found."
                 })
-        else:
-            state["reasoning_steps"].append({
-                "step": "code_search_error", 
-                "text": f"Code store for {best_code} not found."
-            })
         
-        # If we get here, there was an error - provide empty results
+        # If we get here, there was an error or no results - provide empty results
         state["search_results"] = []
         state["sources"] = []
         state["final_answer_en"] = "I couldn't find relevant legal information for your query in the specific legal code."
@@ -1023,41 +920,205 @@ def perform_search(state: ChatbotState) -> ChatbotState:
     
     return state
 
-def extract_legal_terms(query: str, lang: str) -> List[str]:
-    """Extract potential legal terms from the query for better matching."""
-    # This is a simplified version - in a production system, you might use a legal NER model
-    common_legal_terms_fr = [
-        "loi", "article", "code", "décret", "circulaire", "règlement", "jurisprudence", 
-        "tribunal", "cour", "justice", "jugement", "contentieux", "procédure", "avocat",
-        "responsabilité", "contrat", "obligation", "droit", "propriété", "civil", "pénal",
-        "fiscal", "administratif", "commercial", "sociale", "travail", "constitution"
-    ]
+def hybrid_search_code(code_name, query, k=5, alpha=0.5):
+    """
+    Version simplifiée et robuste de la recherche hybride qui combine FAISS et BM25.
+    """
+    results = []
     
-    common_legal_terms_en = [
-        "law", "article", "code", "decree", "circular", "regulation", "jurisprudence",
-        "court", "justice", "judgment", "litigation", "procedure", "lawyer", "attorney",
-        "liability", "contract", "obligation", "right", "property", "civil", "criminal",
-        "tax", "administrative", "commercial", "social", "labor", "constitution"
-    ]
+    # Vérification de base pour éviter les erreurs
+    if not code_name or not query:
+        logging.warning(f"Code name or query missing")
+        return results
     
-    terms = common_legal_terms_fr if lang == "fr" else common_legal_terms_en
-    words = re.findall(r'\w+', query.lower())
+    # Vérifier si les deux index existent
+    if code_name not in code_stores or code_name not in code_bm25_indexes:
+        logging.warning(f"Indexes not found for code {code_name}")
+        return results
     
-    # Extract matching legal terms and noun phrases
-    legal_terms = [word for word in words if word in terms]
+    try:
+        # Obtenir les stores FAISS et BM25
+        faiss_store = code_stores[code_name]
+        bm25_data = code_bm25_indexes[code_name]
+        bm25_index = bm25_data["index"]
+        bm25_documents = bm25_data["documents"]
+        
+        # Nombre de résultats à récupérer de chaque index (plus que k pour permettre la fusion)
+        search_k = 5  
+        
+        # 1. Recherche sémantique avec FAISS
+        semantic_results = {}
+        try:
+            semantic_docs = faiss_store.similarity_search_with_score(query, k=search_k)
+            
+            for i, (doc, score) in enumerate(semantic_docs):
+                metadata = doc.metadata or {}
+                chunk_id = metadata.get("chunk_id", f"semantic_{i}")
+                
+                semantic_results[chunk_id] = {
+                    "rank": i,
+                    "score": float(score),
+                    "doc": doc,
+                    "metadata": metadata
+                }
+        except Exception as e:
+            logging.error(f"FAISS search error: {e}")
+        
+        # 2. Recherche lexicale avec BM25
+        bm25_results = {}
+        try:
+            # Tokeniser la requête pour BM25
+            tokenized_query = tokenize_text(query, "fr")
+            
+            # Obtenir les scores BM25
+            bm25_scores = bm25_index.get_scores(tokenized_query)
+            
+            # Trier les indices par score
+            indices_with_scores = [(i, score) for i, score in enumerate(bm25_scores)]
+            indices_with_scores.sort(key=lambda x: x[1], reverse=True)
+            top_indices = indices_with_scores[:search_k]
+            
+            # Extraire les résultats BM25
+            for rank, (idx, score) in enumerate(top_indices):
+                if idx < len(bm25_documents):
+                    doc_info = bm25_documents[idx]
+                    chunk_id = doc_info.get("chunk_id", f"bm25_{rank}")
+                    
+                    bm25_results[chunk_id] = {
+                        "rank": rank,
+                        "score": float(score),
+                        "doc_info": doc_info
+                    }
+        except Exception as e:
+            logging.error(f"BM25 search error: {e}")
+        
+        # 3. Créer l'ensemble de tous les documents candidats uniques
+        all_chunk_ids = set(semantic_results.keys()) | set(bm25_results.keys())
+        
+        # Si aucun résultat, retourner une liste vide
+        if not all_chunk_ids:
+            return []
+        
+        # 4. Fusion simplifiée : combiner les rangs avec une approche sécurisée
+        combined_results = []
+        
+        for chunk_id in all_chunk_ids:
+            # Préparer les valeurs par défaut
+            combined_score = 0
+            content = ""
+            article = "Unknown"
+            article_id = "unknown"
+            
+            # Combiner les scores
+            if chunk_id in semantic_results:
+                sem_data = semantic_results[chunk_id]
+                sem_rank = sem_data["rank"]
+                # Convertir le rang en score (inversé)
+                sem_rank_score = 1.0 / (sem_rank + 1)  # +1 pour éviter division par zéro
+                
+                # Utiliser les métadonnées de FAISS
+                content = sem_data["doc"].page_content
+                metadata = sem_data["metadata"]
+                article = metadata.get("article", "Unknown")
+                article_id = metadata.get("article_id", "unknown")
+                
+                # Ajouter au score combiné selon le poids alpha
+                combined_score += alpha * sem_rank_score
+            
+            if chunk_id in bm25_results:
+                bm25_data = bm25_results[chunk_id]
+                bm25_rank = bm25_data["rank"]
+                # Convertir le rang en score (inversé)
+                bm25_rank_score = 1.0 / (bm25_rank + 1)  # +1 pour éviter division par zéro
+                
+                # Si on n'a pas déjà extrait le contenu depuis FAISS
+                if not content:
+                    doc_info = bm25_data["doc_info"]
+                    content = doc_info.get("content", "")
+                    article = doc_info.get("article", "Unknown")
+                    article_id = doc_info.get("article_id", "unknown")
+                
+                # Ajouter au score combiné selon le poids (1-alpha)
+                combined_score += (1 - alpha) * bm25_rank_score
+            
+            # Ajouter ce document aux résultats combinés
+            combined_results.append({
+                "chunk_id": chunk_id,
+                "content": content,
+                "article": article,
+                "article_id": article_id,
+                "combined_score": combined_score
+            })
+        
+        # 5. Trier par score combiné et prendre les k meilleurs
+        combined_results.sort(key=lambda x: x["combined_score"], reverse=True)
+        final_results = []
+        
+        for i, result in enumerate(combined_results[:k]):
+            # Confiance basée sur le rang (0.9 pour le premier, décroissant ensuite)
+            confidence = max(0.3, 0.9 - (i * 0.1))
+            
+            final_results.append({
+                "article": result["article"],
+                "article_number": result["article_id"],
+                "chunk_id": result["chunk_id"],
+                "text": result["content"],
+                "content": result["content"],
+                "update_date": "2023",  # Valeur par défaut
+                "confidence": confidence,
+                "combined_score": result["combined_score"],
+                "code_name": code_name,
+                "from_routing": True
+            })
+        
+        return final_results
+        
+    except Exception as e:
+        # Log détaillé de l'erreur
+        logging.error(f"Critical error in hybrid search: {e}")
+        import traceback
+        logging.error(traceback.format_exc())
+        
+        # En cas d'erreur, essayer une recherche de secours
+        return fallback_simple_search(code_name, query, k)
+        
+
+def fallback_simple_search(code_name, query, k=5):
+    """
+    Fonction de recherche simplifiée en cas d'échec de la méthode hybride.
+    N'utilise que FAISS pour une robustesse maximale.
+    """
+    results = []
     
-    # Extract phrases (naive approach - in production, use proper NLP)
-    words = query.lower().split()
-    for i in range(len(words) - 1):
-        phrase = words[i] + " " + words[i + 1]
-        if any(term in phrase for term in terms):
-            legal_terms.append(phrase)
+    try:
+        # N'utiliser que FAISS si disponible
+        if code_name in code_stores:
+            faiss_store = code_stores[code_name]
+            docs = faiss_store.similarity_search(query, k=k)
+            
+            for i, doc in enumerate(docs):
+                # Confiance décroissante
+                confidence = max(0.3, 0.9 - (i * 0.1))
+                metadata = doc.metadata or {}
+                
+                results.append({
+                    "article": metadata.get("article", f"Article {i+1}"),
+                    "article_number": metadata.get("article_id", f"unknown_{i+1}"),
+                    "chunk_id": metadata.get("chunk_id", f"fallback_{i}"),
+                    "text": doc.page_content,
+                    "content": doc.page_content,
+                    "update_date": "2023",
+                    "confidence": confidence,
+                    "code_name": code_name,
+                    "from_routing": True,
+                    "is_fallback": True
+                })
+            
+            logging.info(f"Fallback search found {len(results)} results")
+    except Exception as e:
+        logging.error(f"Even fallback search failed: {e}")
     
-    # Extract numbers that might be article numbers
-    article_numbers = re.findall(r'\b(?:article\s+)?(\d+(?:\.\d+)?)\b', query.lower())
-    legal_terms.extend(article_numbers)
-    
-    return list(set(legal_terms))
+    return results
 
 
 def generate_answer(state: ChatbotState) -> ChatbotState:
@@ -1209,6 +1270,75 @@ def is_french(text: str) -> bool:
     except:
         # If detection fails, default to false
         return False
+
+def should_rebuild_stores():
+    """Check if stores need to be rebuilt based on file changes."""
+    stores_dir = os.path.abspath(config.get("stores_directory", "stores"))
+    legal_codes_dir = os.path.abspath("legal_codes")
+    version_file = os.path.join(stores_dir, "build_metadata.json")
+    
+    # If stores directory doesn't exist, rebuild is needed
+    if not os.path.exists(stores_dir):
+        logging.info("Stores directory doesn't exist. Rebuild needed.")
+        return True
+        
+    # If version file doesn't exist, rebuild is needed
+    if not os.path.exists(version_file):
+        logging.info("Build metadata file doesn't exist. Rebuild needed.")
+        return True
+    
+    try:
+        # Load the previous build metadata
+        with open(version_file, "r") as f:
+            metadata = json.load(f)
+        
+        # Check if all expected stores exist
+        for code_name in code_summaries.keys():
+            store_path = os.path.join(stores_dir, code_name)
+            bm25_path = os.path.join(stores_dir, "bm25", f"{code_name}_bm25.json")
+            
+            if not os.path.exists(store_path) or not os.path.exists(bm25_path):
+                logging.info(f"Store or BM25 index for {code_name} is missing. Rebuild needed.")
+                return True
+        
+        # Check if source files have been modified since last build
+        last_build_time = metadata.get("build_time", 0)
+        for code_name in code_summaries.keys():
+            source_file = os.path.join(legal_codes_dir, f"{code_name}.txt")
+            if os.path.exists(source_file):
+                if os.path.getmtime(source_file) > last_build_time:
+                    logging.info(f"Source file {source_file} modified. Rebuild needed.")
+                    return True
+        
+        # Check if code summaries have changed
+        if str(sorted(code_summaries.keys())) != metadata.get("code_names", ""):
+            logging.info("Code summaries have changed. Rebuild needed.")
+            return True
+            
+        logging.info("No rebuild needed. Using existing stores.")
+        return False
+        
+    except Exception as e:
+        logging.error(f"Error checking if rebuild is needed: {e}")
+        return True
+
+def save_build_metadata():
+    """Save metadata about the current build."""
+    stores_dir = os.path.abspath(config.get("stores_directory", "stores"))
+    version_file = os.path.join(stores_dir, "build_metadata.json")
+    
+    metadata = {
+        "build_time": time.time(),
+        "code_names": str(sorted(code_summaries.keys())),
+        "embedding_model": config["embedding_model"],
+        "vector_dim": config["vector_dim"],
+        "build_date": time.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    
+    with open(version_file, "w") as f:
+        json.dump(metadata, f)
+    
+    logging.info(f"Saved build metadata to {version_file}")
 
 workflow = StateGraph(ChatbotState)
 workflow.add_node("understand_query", understand_query)
@@ -1516,64 +1646,6 @@ def ask():
         # Determine the class of relevance
         relevance_class = "high-relevance" if code_similarity > 0.7 else "medium-relevance" if code_similarity > 0.4 else "low-relevance"
         
-        code_indicator = f"""
-        <div class="code-indicator {relevance_class}">
-            <div class="code-header">Code juridique consulté:</div>
-            <div class="code-name">{code_name}</div>
-            <div class="code-summary">{code_summary}</div>
-            <div class="code-relevance">Pertinence: {code_similarity * 100:.1f}%</div>
-        </div>
-        """
-        
-        # Add CSS for the code indicator
-        code_indicator_style = """
-        <style>
-        .code-indicator {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            border-radius: 8px;
-            border-left: 6px solid;
-        }
-        .high-relevance {
-            background-color: #e6f4ea;
-            border-left-color: #34a853;
-        }
-        .medium-relevance {
-            background-color: #fef7e0;
-            border-left-color: #fbbc04;
-        }
-        .low-relevance {
-            background-color: #fce8e6;
-            border-left-color: #ea4335;
-        }
-        .code-header {
-            font-weight: bold;
-            font-size: 1rem;
-            color: #202124;
-            margin-bottom: 0.5rem;
-        }
-        .code-name {
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #1a73e8;
-        }
-        .code-summary {
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #5f6368;
-        }
-        .code-relevance {
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: #202124;
-        }
-        </style>
-        """
-        
-        # Add the code indicator to the beginning of the HTML
-        assistant_html = code_indicator_style + code_indicator + assistant_html
-        
         add_message(conversation_id, "assistant", assistant_html)
 
         # Calculate total processing time
@@ -1596,6 +1668,7 @@ def ask():
             "sources": final_state["sources"],
             "metrics": metrics
         })
+
 @app.route("/get_conversations", methods=["GET"])
 def get_conversations():
     return jsonify(get_all_conversations())
@@ -1953,25 +2026,46 @@ function formatLegalContent(content) {
 @app.route('/rebuild_stores', methods=['GET'])
 def rebuild_stores_route():
     try:
-        # Forcer la suppression du dossier stores s'il existe
-        stores_dir = config.get("stores_directory", "stores")
-        if os.path.exists(stores_dir):
-            import shutil
-            shutil.rmtree(stores_dir)
-            logging.info(f"Dossier stores supprimé: {stores_dir}")
+        force_rebuild = request.args.get('force', 'false').lower() == 'true'
         
-        # Recréer le dossier
-        os.makedirs(stores_dir, exist_ok=True)
-        
-        # Construire les vecteurs
-        build_code_stores()
-        
-        return jsonify({
-            "success": True,
-            "message": "Reconstruction des stores terminée. Veuillez redémarrer l'application."
-        })
+        if force_rebuild or should_rebuild_stores():
+            # Force rebuild of stores
+            stores_dir = config.get("stores_directory", "stores")
+            
+            if os.path.exists(stores_dir):
+                # Only remove specific subdirectories, keeping build_metadata.json
+                for item in os.listdir(stores_dir):
+                    item_path = os.path.join(stores_dir, item)
+                    # Skip the metadata file when cleaning up
+                    if item != "build_metadata.json" and os.path.exists(item_path):
+                        if os.path.isdir(item_path):
+                            import shutil
+                            shutil.rmtree(item_path)
+                        else:
+                            os.remove(item_path)
+            
+            # Build the stores
+            success = build_code_stores()
+            
+            # Reload the data
+            initialize_data()
+            
+            if success:
+                message = "Forced rebuild completed successfully." if force_rebuild else "Rebuild due to changes completed successfully."
+            else:
+                message = "Rebuild encountered errors, check the logs."
+                
+            return jsonify({
+                "success": success,
+                "message": message
+            })
+        else:
+            return jsonify({
+                "success": True,
+                "message": "No rebuild needed. Stores are up to date."
+            })
     except Exception as e:
-        logging.error(f"Erreur lors de la reconstruction des stores: {e}")
+        logging.error(f"Error rebuilding stores: {e}")
         return jsonify({
             "success": False,
             "error": str(e)
@@ -1995,34 +2089,22 @@ def format_confidence(confidence):
     else:
         return "Low Relevance"
 
-
 if __name__ == "__main__":
-    # Force rebuild of code stores
+    # Initialize directories
     stores_dir = config.get("stores_directory", "stores")
-    
-    # Remove existing stores directory if it exists
-    if os.path.exists(stores_dir):
-        import shutil
-        shutil.rmtree(stores_dir)
-        print(f"Removed existing stores directory: {stores_dir}")
-    
-    # Create fresh directory
     os.makedirs(stores_dir, exist_ok=True)
-    print(f"Created fresh stores directory: {stores_dir}")
     
-    # Call build_code_stores function
-    build_code_stores()
+    # Check if rebuild is needed
+    if should_rebuild_stores():
+        print("Changes detected - rebuilding stores...")
+        build_code_stores()
+    else:
+        print("No changes detected - using existing stores")
     
-    # Verify stores were created
+    # Verify stores exist
     if os.path.exists(stores_dir):
         store_files = os.listdir(stores_dir)
-        print(f"VERIFICATION: Stores directory contains: {store_files}")
-        for store_dir in store_files:
-            store_path = os.path.join(stores_dir, store_dir)
-            if os.path.isdir(store_path):
-                print(f"Store {store_dir} contents: {os.listdir(store_path)}")
-    else:
-        print("ERROR: Stores directory was not created!")
+        print(f"Stores directory contains: {', '.join(store_files)}")
     
     # Continue with initialization
     init_db()
