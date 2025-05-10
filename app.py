@@ -67,7 +67,7 @@ code_bm25_indexes = {}
 DEFAULT_CONFIG = {
     "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
     "vector_dim": 384,
-    "groq_api_key": "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",
+    "groq_api_key": "put your grok api here",
     "groq_model": "deepseek-r1-distill-llama-70b",  
     "embedding_batch_size": 8,
     "search_top_k": 5,
